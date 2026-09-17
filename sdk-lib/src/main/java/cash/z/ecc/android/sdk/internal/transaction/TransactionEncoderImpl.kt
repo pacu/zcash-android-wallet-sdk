@@ -196,6 +196,7 @@ internal class TransactionEncoderImpl(
         }.onFailure {
             Twig.error(it) { "Caught exception while redacting PCZT for Signer." }
         }.getOrElse {
+            if (it is CancellationException) throw it
             throw PcztException.RedactPcztForSignerException(it.message, it.cause)
         }
 
@@ -207,6 +208,7 @@ internal class TransactionEncoderImpl(
         }.onFailure {
             Twig.error(it) { "Caught exception while checking PCZT Sapling presence." }
         }.getOrElse {
+            if (it is CancellationException) throw it
             throw PcztException.PcztRequiresSaplingProofsException(it.message, it.cause)
         }
 
@@ -225,6 +227,7 @@ internal class TransactionEncoderImpl(
         }.onFailure {
             Twig.error(it) { "Caught exception while adding proofs to PCZT." }
         }.getOrElse {
+            if (it is CancellationException) throw it
             throw PcztException.AddProofsToPcztException(it.message, it.cause)
         }
 
@@ -243,6 +246,7 @@ internal class TransactionEncoderImpl(
             }.onFailure {
                 Twig.error(it) { "Caught exception while extracting and storing transaction from PCZT." }
             }.getOrElse {
+                if (it is CancellationException) throw it
                 throw PcztException.ExtractAndStoreTxFromPcztException(it.message, it.cause)
             }
 
